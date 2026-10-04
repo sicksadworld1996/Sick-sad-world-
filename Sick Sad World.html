@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICK SAD WORLD .COM // 199X ARCHIVE</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for retro terminal & arcade look -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Creepster&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #030303;
+            color: #ff3333;
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .font-vt {
+            font-family: 'VT323', monospace;
+        }
+
+        .font-creep {
+            font-family: 'Creepster', cursive;
+        }
+
+        /* CRT Screen Scanlines & Vignette Effect */
+        .crt::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.04), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.04));
+            z-index: 99999;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .crt::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: radial-gradient(circle at center, transparent 55%, rgba(0, 0, 0, 0.85) 100%);
+            z-index: 99998;
+            pointer-events: none;
+        }
+
+        /* Glitch text animation */
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+
+        .glitch-hover:hover {
+            animation: glitch 0.15s infinite;
+            color: #ffff00;
+            text-shadow: 2px 2px #ff0000;
+        }
+
+        /* Scrollbar retro */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+            border: 1px solid #440000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff3333;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffff00;
+        }
+
+        /* VHS static noise overlay */
+        .vhs-noise {
+            background-image: url('https://placehold.co/600x400/111/222?text=STATIC');
+            opacity: 0.08;
+        }
+
+        /* Retro window borders */
+        .retro-window-red {
+            box-shadow: 4px 4px 0px #ff3333;
+            border: 2px solid #ff3333;
+            background: #0d0a0a;
+        }
+
+        .retro-window-yellow {
+            box-shadow: 4px 4px 0px #ffff00;
+            border: 2px solid #ffff00;
+            background: #0a0a0d;
+        }
+
+        .retro-window-purple {
+            box-shadow: 4px 4px 0px #bf00ff;
+            border: 2px solid #bf00ff;
+            background: #0d0a0d;
+        }
+
+        marquee {
+            border-top: 1px dashed #ff3333;
+            border-bottom: 1px dashed #ff3333;
+            background: #110000;
+        }
+    </style>
+</head>
+<body class="crt min-h-screen flex flex-col justify-between selection:bg-[#ff3333] selection:text-black">
+
+    <!-- Top Ticker / Header -->
+    <header class="bg-[#110000] border-b-2 border-[#ff3333] sticky top-0 z-50">
+        <div class="px-4 py-3 flex flex-wrap justify-between items-center text-sm">
+            <div class="flex items-center space-x-3">
+                <span class="inline-block w-3 h-3 bg-[#ffff00] animate-ping"></span>
+                <span class="font-vt text-3xl md:text-4xl tracking-widest text-[#ff3333] glitch-hover cursor-pointer" onclick="switchTab('home')">
+                    SICK SAD WORLD <span class="text-xs text-[#ffff00]">.COM</span>
+                </span>
+            </div>
+            <div class="flex items-center space-x-4 font-vt text-xl">
+                <span id="clock" class="text-[#ffff00]">00:00:00</span>
+                <button onclick="toggleAudio()" id="audio-btn" class="hover:text-[#ffff00] cursor-pointer text-[#ff3333]">[AUDIO_FEED: OFF]</button>
+            </div>
+        </div>
+        <marquee behavior="scroll" direction="left" scrollamount="5" class="text-[#ffff00] font-vt text-xl py-1">
+            *** NOTICIA DE ÚLTIMA HORA: ¿PUEDEN LAS PLÁNTAS DE INTERIOR ESCUCHAR TUS SECRETOS MÁS OSCUROS? *** LOS GATOS MUTANTES DEL LABORATORIO B-4 SE HAN ESCAPADO *** TRANSMISIÓN EN VIVO DESDE EL ABISMO NOCTURNO *** BIENVENIDOS AL MUNDO ENFERMO Y TRISTE ***
+        </marquee>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-6 relative">
+
+        <!-- Sidebar Navigation -->
+        <aside class="lg:col-span-1 space-y-6">
+            <div class="retro-window-red p-4">
+                <div class="bg-[#ff3333] text-black font-bold px-2 py-1 mb-3 text-sm flex justify-between items-center font-vt text-xl">
+                    <span>INDEX_DIR.DAT</span>
+                    <span>_ X</span>
+                </div>
+                <ul class="space-y-2 font-vt text-xl">
+                    <li><a href="#home" onclick="switchTab('home')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 01. PORTADA BIZARRA</a></li>
+                    <li><a href="#blog" onclick="switchTab('blog')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 02. NOTICIAS FANZINE</a></li>
+                    <li><a href="#media" onclick="switchTab('media')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 03. TV TRANSMISIONES</a></li>
+                    <li><a href="#evidence" onclick="switchTab('evidence')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 04. ARCHIVOS EVIDENCIA</a></li>
+                    <li><a href="#guestbook" onclick="switchTab('guestbook')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 05. LIBRO DE VISITAS</a></li>
+                    <li><a href="#terminal" onclick="switchTab('terminal')" class="block hover:bg-[#ff3333] hover:text-black px-2 py-1 transition">&gt; 06. TERMINAL SECRETA</a></li>
+                </ul>
+            </div>
+
+            <!-- TV Static Widget -->
+            <div class="retro-window-yellow p-4 text-xs font-mono text-[#ffff00]">
+                <div class="bg-[#ffff00] text-black font-bold px-2 py-1 mb-2 font-vt text-xl">ESTADO DE SEÑAL</div>
+                <div class="w-full h-24 bg-neutral-900 border border-[#ffff00] relative overflow-hidden flex items-center justify-center">
+                    <div class="absolute inset-0 vhs-noise"></div>
+                    <span id="signal-status" class="font-vt text-xl text-[#ffff00] z-10 animate-pulse">FRECUENCIA INESTABLE</span>
+                </div>
+                <p class="mt-2 text-gray-400">CANAL: 66.6 UHF</p>
+                <p class="text-gray-400">AUDIENCIA: 1,996 ESPECTADORES</p>
+            </div>
+        </aside>
+
+        <!-- Dynamic Content Section -->
+        <section class="lg:col-span-3 space-y-6">
+
+            <!-- TAB 1: HOME / PORTADA -->
+            <div id="tab-home" class="tab-content space-y-6">
+                <div class="retro-window-red p-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl font-creep pointer-events-none text-[#ff3333]">SSW</div>
+                    <div class="bg-[#ff3333] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>SICK_SAD_WORLD_MANIFESTO.TXT</span>
+                        <span>[ONLINE 24/7]</span>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-creep text-[#ffff00] mb-4 tracking-wide glitch-hover">
+                        ¿Estás listo para mirar lo que el mundo oculta en la oscuridad?
+                    </h1>
+                    <p class="text-gray-300 text-sm md:text-base leading-relaxed mb-4">
+                        Bienvenido al archivo oficial de <strong class="text-[#ffff00]">Sick Sad World</strong>. Inspirado en los reportajes más absurdos, bizarros y perturbadores de la televisión nocturna de los 90. Aquí recopilamos historias de experimentos fallidos, conspiraciones urbanas, fenómenos paranormales y locura cotidiana.
+                    </p>
+                    <div class="border-l-4 border-[#ffff00] pl-4 py-2 my-4 bg-[#110000] text-gray-300 italic text-sm">
+                        "¿Puede un corte de cabello cambiar tu alineación cuántica? Lo averiguaremos después de este corte comercial..."
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <button onclick="switchTab('blog')" class="bg-[#ff3333] text-black font-vt text-2xl px-5 py-2 hover:bg-[#ffff00] hover:text-black transition shadow-[3px_3px_0px_#fff]">
+                            LEER REPORTAJES
+                        </button>
+                        <button onclick="switchTab('media')" class="border border-[#ffff00] text-[#ffff00] font-vt text-2xl px-5 py-2 hover:bg-[#ffff00] hover:text-black transition">
+                            VER TRANSMISIÓN TV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Featured Quick Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="retro-window-yellow p-4">
+                        <h3 class="text-[#ffff00] font-vt text-2xl mb-2">✦ CASOS BIZARROS</h3>
+                        <p class="text-gray-300 text-sm">Investigaciones sobre personas que afirman escuchar estaciones de radio rusas a través de sus empastes dentales.</p>
+                    </div>
+                    <div class="retro-window-purple p-4">
+                        <h3 class="text-[#bf00ff] font-vt text-2xl mb-2">✦ VIDEOCINTAS VHS</h3>
+                        <p class="text-gray-300 text-sm">Simulador de televisión CRT con interferencia analógica, tracking defectuoso y canales secretos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: BLOG / FANZINE NOTICIAS -->
+            <div id="tab-blog" class="tab-content hidden space-y-6">
+                <div class="retro-window-red p-6">
+                    <div class="bg-[#ff3333] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>NOTICIAS_BIZARRAS.LOG // ARCHIVO DE REPORTAJES</span>
+                        <span>[EDICIÓN NOCTURNA]</span>
+                    </div>
+                    
+                    <div class="space-y-8">
+                        <!-- Post 1 -->
+                        <article class="border-b border-dashed border-[#440000] pb-6">
+                            <div class="flex flex-wrap justify-between text-xs text-[#ffff00] mb-2 font-mono">
+                                <span>INVESTIGADOR: TRENT LANE</span>
+                                <span>FECHA: 12.NOV.1996</span>
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-vt text-[#ffff00] mb-2 hover:underline cursor-pointer">
+                                #01: ¿Es tu tostadora un espía interdimensional del gobierno?
+                            </h2>
+                            <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                Un residente de Lawndale descubrió que al tostar pan centeno a las 3:33 AM, el aparato emite frecuencias capaces de sintonizar transmisiones de OVNIs. Analizamos las pruebas y las migajas sospechosas encontradas en la cocina.
+                            </p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 my-3">
+                                <img src="https://placehold.co/400x300/110000/ff3333?text=TOASTER_CONFIDENTIAL" alt="Toaster" class="border border-[#ff3333] opacity-80 hover:opacity-100 transition w-full h-32 object-cover" onerror="this.src='https://placehold.co/400x300/222/fff?text=ERROR'">
+                                <img src="https://placehold.co/400x300/110000/ffff00?text=SIGNAL_WAVE" alt="Wave" class="border border-[#ffff00] opacity-80 hover:opacity-100 transition w-full h-32 object-cover" onerror="this.src='https://placehold.co/400x300/222/fff?text=ERROR'">
+                            </div>
+                        </article>
+
+                        <!-- Post 2 -->
+                        <article class="border-b border-dashed border-[#440000] pb-6">
+                            <div class="flex flex-wrap justify-between text-xs text-[#ffff00] mb-2 font-mono">
+                                <span>INVESTIGADOR: JANE LANE</span>
+                                <span>FECHA: 28.OCT.1996</span>
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-vt text-[#ffff00] mb-2 hover:underline cursor-pointer">
+                                #02: Adicción extrema a los videojuegos de arcades clandestinos en sótanos
+                            </h2>
+                            <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                Jóvenes que llevan 72 horas jugando sin parpadear en una máquina recreativa arcade sin marca. ¿Hipnosis colectiva o un truco publicitario de una bebida energética radioactiva?
+                            </p>
+                        </article>
+
+                        <!-- Post 3 -->
+                        <article class="pb-2">
+                            <div class="flex flex-wrap justify-between text-xs text-[#ffff00] mb-2 font-mono">
+                                <span>INVESTIGADOR: ANÓNIMO</span>
+                                <span>FECHA: 05.SEP.1996</span>
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-vt text-[#ffff00] mb-2 hover:underline cursor-pointer">
+                                #03: El extraño caso del perro que ladraba en código morse perfecto
+                            </h2>
+                            <p class="text-gray-300 text-sm mb-4 leading-relaxed">
+                                Caniche toy predice caídas en la bolsa de valores y advertencias sobre tormentas solares agitando la cola rítmicamente. Su dueño asegura que solo pide galletas, pero los expertos descodificadores dudan.
+                            </p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: MEDIA / TV TRANSMISIONES -->
+            <div id="tab-media" class="tab-content hidden space-y-6">
+                <div class="retro-window-yellow p-6">
+                    <div class="bg-[#ffff00] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>TV_MONITOR.EXE // TRANSMISIÓN CRT VHS</span>
+                        <span>[CANAL ACTIVO]</span>
+                    </div>
+
+                    <!-- Television Monitor Frame -->
+                    <div class="bg-black border-4 border-[#333] p-4 relative overflow-hidden shadow-2xl rounded-lg">
+                        <div class="absolute top-3 left-3 text-xs text-[#ffff00] font-mono z-10 flex items-center space-x-2">
+                            <span id="tv-status-dot" class="w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+                            <span id="tv-status-text">REPRODUCIENDO: CANAL 01</span>
+                        </div>
+                        <div class="absolute top-3 right-3 text-xs text-white font-mono z-10">
+                            VOL: [███████░░░] 70%
+                        </div>
+
+                        <!-- Screen Content Area -->
+                        <div id="tv-screen" class="w-full h-72 md:h-96 bg-neutral-950 border-2 border-[#ffff00] relative flex flex-col items-center justify-center overflow-hidden p-6 text-center">
+                            <div class="absolute inset-0 vhs-noise pointer-events-none"></div>
+                            
+                            <!-- Dynamic Content Inside TV -->
+                            <div id="tv-inner-content" class="z-10 space-y-3">
+                                <div class="font-creep text-4xl md:text-5xl text-[#ff3333] glitch-hover">¿SABÍAS QUÉ...?</div>
+                                <p class="text-sm md:text-base text-gray-200 font-mono max-w-lg">
+                                    "¿Puede una sopa instantánea caliente abrir un portal temporal si se consume exactamente a la medianoche?"
+                                </p>
+                                <span class="inline-block text-xs text-[#ffff00] font-mono border border-[#ffff00] px-2 py-1 mt-2">TRANSMISIÓN NO. 01 // SICK SAD WORLD</span>
+                            </div>
+
+                            <!-- Scanlines -->
+                            <div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none"></div>
+                        </div>
+
+                        <!-- Television Control Buttons -->
+                        <div class="mt-4 flex flex-wrap justify-between items-center bg-[#111] p-3 border border-[#440000]">
+                            <div class="flex flex-wrap gap-2 font-vt text-xl">
+                                <button onclick="changeChannel(1)" class="bg-gray-800 hover:bg-[#ffff00] hover:text-black px-3 py-1 border border-gray-600 text-white transition">CANAL 1</button>
+                                <button onclick="changeChannel(2)" class="bg-gray-800 hover:bg-[#ffff00] hover:text-black px-3 py-1 border border-gray-600 text-white transition">CANAL 2</button>
+                                <button onclick="changeChannel(3)" class="bg-gray-800 hover:bg-[#ffff00] hover:text-black px-3 py-1 border border-gray-600 text-white transition">CANAL 3</button>
+                                <button onclick="triggerStatic()" class="bg-[#ff3333] text-black font-bold hover:bg-white px-3 py-1 transition">ESTÁTICA</button>
+                            </div>
+                            <div class="text-xs text-gray-400 font-mono mt-2 sm:mt-0">
+                                SEÑAL: <span id="signal-quality" class="text-[#ffff00]">ESTABLE (99%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ARCHIVO DE EVIDENCIAS -->
+            <div id="tab-evidence" class="tab-content hidden space-y-6">
+                <div class="retro-window-purple p-6">
+                    <div class="bg-[#bf00ff] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>TABLÓN_EVIDENCIAS.DAT // ARCHIVOS CLASIFICADOS</span>
+                        <span>[CONFIDENCIAL]</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-6">Fotografías recuperadas de rollos de cámara encontrados en contenedores de basura sospechosos.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="bg-black border-2 border-[#bf00ff] p-3 relative group">
+                            <div class="absolute -top-3 right-3 bg-[#bf00ff] text-black text-xs px-2 font-mono font-bold">EVIDENCIA #A1</div>
+                            <img src="https://placehold.co/400x300/110011/bf00ff?text=MUTANT_PLANT" alt="Evidencia 1" class="w-full h-40 object-cover border border-[#bf00ff] mb-2 opacity-80 group-hover:opacity-100 transition" onerror="this.src='https://placehold.co/400x300/222/fff?text=ERROR'">
+                            <h4 class="text-[#ffff00] font-vt text-xl">Planta carnívora casera</h4>
+                            <p class="text-xs text-gray-400 font-mono">Reportada en los suburbios de Lawndale tras consumir llaves de auto.</p>
+                        </div>
+                        <div class="bg-black border-2 border-[#bf00ff] p-3 relative group">
+                            <div class="absolute -top-3 right-3 bg-[#bf00ff] text-black text-xs px-2 font-mono font-bold">EVIDENCIA #B2</div>
+                            <img src="https://placehold.co/400x300/110011/ff3333?text=TV_STATIC_FACE" alt="Evidencia 2" class="w-full h-40 object-cover border border-[#ff3333] mb-2 opacity-80 group-hover:opacity-100 transition" onerror="this.src='https://placehold.co/400x300/222/fff?text=ERROR'">
+                            <h4 class="text-[#ffff00] font-vt text-xl">Rostro en la estática</h4>
+                            <p class="text-xs text-gray-400 font-mono">Captura de pantalla a las 04:00 AM durante una prueba de transmisión.</p>
+                        </div>
+                        <div class="bg-black border-2 border-[#bf00ff] p-3 relative group">
+                            <div class="absolute -top-3 right-3 bg-[#bf00ff] text-black text-xs px-2 font-mono font-bold">EVIDENCIA #C3</div>
+                            <img src="https://placehold.co/400x300/110011/ffff00?text=MYSTERIOUS_FOOTPRINT" alt="Evidencia 3" class="w-full h-40 object-cover border border-[#ffff00] mb-2 opacity-80 group-hover:opacity-100 transition" onerror="this.src='https://placehold.co/400x300/222/fff?text=ERROR'">
+                            <h4 class="text-[#ffff00] font-vt text-xl">Huellas en el techo</h4>
+                            <p class="text-xs text-gray-400 font-mono">Encontradas en el comedor escolar después de la clase de química.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 5: LIBRO DE VISITAS -->
+            <div id="tab-guestbook" class="tab-content hidden space-y-6">
+                <div class="retro-window-red p-6">
+                    <div class="bg-[#ff3333] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>GUESTBOOK.CGI // FIRMA EL LIBRO DEL MUNDO ENFERMO</span>
+                        <span>[INTERACTIVO]</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Deja tu testimonio antes de que la línea de marcación directa se interrumpa.</p>
+                    
+                    <form id="guestbook-form" onsubmit="addGuestEntry(event)" class="space-y-4 mb-6 bg-[#110000] p-4 border border-[#440000]">
+                        <div>
+                            <label class="block text-xs font-mono text-[#ffff00] mb-1">ALIAS / CODEX NAME:</label>
+                            <input type="text" id="gb-name" required class="w-full bg-black border border-[#ff3333] text-[#ffff00] px-3 py-2 text-sm focus:outline-none focus:border-[#ffff00]" placeholder="Ej. DariaObserver96">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-[#ffff00] mb-1">MENSAJE BIZARRO:</label>
+                            <textarea id="gb-msg" required rows="3" class="w-full bg-black border border-[#ff3333] text-[#ffff00] px-3 py-2 text-sm focus:outline-none focus:border-[#ffff00]" placeholder="Escribe tu nota aquí..."></textarea>
+                        </div>
+                        <button type="submit" class="bg-[#ffff00] text-black font-vt text-2xl px-6 py-2 hover:bg-[#ff3333] hover:text-white transition font-bold shadow-[2px_2px_0px_#fff]">
+                            ENVIAR FIRMA AL SERVIDOR
+                        </button>
+                    </form>
+
+                    <!-- Entries List -->
+                    <div id="guestbook-entries" class="space-y-3">
+                        <div class="bg-[#0d0a0a] border border-[#440000] p-3 text-sm">
+                            <div class="flex justify-between text-xs text-gray-500 font-mono mb-1">
+                                <span class="text-[#ffff00]">USER: QuinnMorpheus</span>
+                                <span>1996-10-31 23:59:12</span>
+                            </div>
+                            <p class="text-gray-300">¡Este sitio es increíblemente raro! Me recuerda a los reportajes que veo en la tele antes de dormir.</p>
+                        </div>
+                        <div class="bg-[#0d0a0a] border border-[#440000] p-3 text-sm">
+                            <div class="flex justify-between text-xs text-gray-500 font-mono mb-1">
+                                <span class="text-[#ff3333]">USER: CyberPunk_99</span>
+                                <span>1996-11-01 01:14:22</span>
+                            </div>
+                            <p class="text-gray-300">Las scanlines y el estilo de televisión de tubo son perfectos. ¡Mantengan el sitio vivo!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: TERMINAL SECRETA -->
+            <div id="tab-terminal" class="tab-content hidden space-y-6">
+                <div class="retro-window-yellow p-6">
+                    <div class="bg-[#ffff00] text-black font-bold px-3 py-1 mb-4 flex justify-between items-center font-vt text-xl">
+                        <span>TERMINAL_SSW.EXE // LÍNEA DE COMANDOS</span>
+                        <span>[ROOT ACCESS]</span>
+                    </div>
+                    <p class="text-gray-300 text-sm mb-4">Introduce comandos del sistema. Prueba con <code class="text-[#ffff00] bg-black px-1 border border-[#ffff00]">help</code>, <code class="text-[#ffff00] bg-black px-1 border border-[#ffff00]">broadcast</code>, <code class="text-[#ffff00] bg-black px-1 border border-[#ffff00]">glitch</code>, <code class="text-[#ffff00] bg-black px-1 border border-[#ffff00]">about</code> o <code class="text-[#ffff00] bg-black px-1 border border-[#ffff00]">clear</code>.</p>
+
+                    <div id="terminal-screen" class="bg-black border border-[#ffff00] p-4 h-64 overflow-y-auto font-mono text-sm text-[#ffff00] mb-3 space-y-1">
+                        <div>[SICK SAD WORLD KERNEL v1.996 BOOTED...]</div>
+                        <div>Escribe 'help' para ver los comandos disponibles en la red oscura.</div>
+                    </div>
+
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[#ffff00] font-bold">&gt;</span>
+                        <input type="text" id="terminal-input" onkeydown="handleTerminalCommand(event)" class="w-full bg-black border border-[#333] text-[#ffff00] px-3 py-2 text-sm focus:outline-none focus:border-[#ffff00] font-mono" placeholder="Escribe comando...">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#110000] border-t-2 border-[#ff3333] py-4 px-6 text-center text-xs text-gray-400 font-mono mt-8">
+        <p>SICK SAD WORLD .COM // 1996-2026. TRANSMISIÓN NOCTURNA EXCLUSIVA PARA MENTES CURIOSAS.</p>
+        <p class="mt-1 text-[#ffff00]">ESTÉTICA CRT / VHS / FANZINE TELEVISIVO DE LOS 90</p>
+    </footer>
+
+    <script>
+        // Real-time clock update
+        setInterval(() => {
+            const now = new Date();
+            const timeString = now.toTimeString().split(' ')[0];
+            document.getElementById('clock').innerText = timeString;
+        }, 1000);
+
+        // Tab switching logic
+        function switchTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.add('hidden'));
+            
+            const activeTab = document.getElementById('tab-' + tabId);
+            if (activeTab) {
+                activeTab.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // TV Channel simulation data
+        const tvChannels = {
+            1: {
+                title: "¿SABÍAS QUÉ...?",
+                text: "\"¿Puede una sopa instantánea caliente abrir un portal temporal si se consume exactamente a la medianoche?\"",
+                meta: "TRANSMISIÓN NO. 01 // ALIMENTACIÓN Y MISTERIO"
+            },
+            2: {
+                title: "PELIGROS COTIDIANOS",
+                text: "\"¿Es seguro sonreírle a un maniquí de tienda departamental cuando nadie te está mirando?\"",
+                meta: "TRANSMISIÓN NO. 02 // PARANOIA URBANA"
+            },
+            3: {
+                title: "MUTACIONES DE OFICINA",
+                text: "\"¿Por qué las grapadoras de la oficina parecen conspirar para perder tus documentos más importantes?\"",
+                meta: "TRANSMISIÓN NO. 03 // FENÓMENOS BIZARROS"
+            }
+        };
+
+        function changeChannel(channelNum) {
+            const statusDot = document.getElementById('tv-status-dot');
+            const statusText = document.getElementById('tv-status-text');
+            const innerContent = document.getElementById('tv-inner-content');
+            const quality = document.getElementById('signal-quality');
+
+            statusDot.className = "w-2.5 h-2.5 rounded-full bg-yellow-400 animate-bounce";
+            statusText.innerText = "SINTONIZANDO CANAL 0" + channelNum + "...";
+            quality.innerText = "INTERFERENCIA (85%)";
+
+            setTimeout(() => {
+                statusDot.className = "w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse";
+                statusText.innerText = "REPRODUCIENDO: CANAL 0" + channelNum;
+                quality.innerText = "ESTABLE (98%)";
+
+                const ch = tvChannels[channelNum];
+                innerContent.innerHTML = `
+                    <div class="font-creep text-4xl md:text-5xl text-[#ff3333] glitch-hover">${ch.title}</div>
+                    <p class="text-sm md:text-base text-gray-200 font-mono max-w-lg">${ch.text}</p>
+                    <span class="inline-block text-xs text-[#ffff00] font-mono border border-[#ffff00] px-2 py-1 mt-2">${ch.meta}</span>
+                `;
+            }, 400);
+        }
+
+        function triggerStatic() {
+            const innerContent = document.getElementById('tv-inner-content');
+            const quality = document.getElementById('signal-quality');
+            quality.innerText = "PÉRDIDA DE SEÑAL (0%)";
+            innerContent.innerHTML = `
+                <div class="font-vt text-4xl text-[#ff3333] mb-2 animate-pulse">ESTÁTICA MAGNÉTICA</div>
+                <p class="text-xs text-gray-400 font-mono">SIN PORTADORA - COMPRUEBE EL CABLE COAXIAL</p>
+            `;
+            setTimeout(() => {
+                quality.innerText = "ESTABLE (95%)";
+                changeChannel(1);
+            }, 1200);
+        }
+
+        // Guestbook entry dynamic addition
+        function addGuestEntry(e) {
+            e.preventDefault();
+            const name = document.getElementById('gb-name').value;
+            const msg = document.getElementById('gb-msg').value;
+            const container = document.getElementById('guestbook-entries');
+
+            const now = new Date();
+            const dateStr = now.toISOString().slice(0, 19).replace('T', ' ');
+
+            const entryHTML = `
+                <div class="bg-[#0d0a0a] border border-[#440000] p-3 text-sm animate-pulse">
+                    <div class="flex justify-between text-xs text-gray-500 font-mono mb-1">
+                        <span class="text-[#ffff00]">USER: ${escapeHTML(name)}</span>
+                        <span>${dateStr}</span>
+                    </div>
+                    <p class="text-gray-300">${escapeHTML(msg)}</p>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('afterbegin', entryHTML);
+            document.getElementById('guestbook-form').reset();
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Terminal logic
+        function handleTerminalCommand(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('terminal-input');
+                const screen = document.getElementById('terminal-screen');
+                const val = input.value.trim().toLowerCase();
+
+                screen.innerHTML += `<div class="text-white">&gt; ${escapeHTML(input.value)}</div>`;
+                input.value = '';
+
+                let response = "";
+                if (val === 'help') {
+                    response = "Comandos disponibles:<br>- <b>about</b>: Información sobre el archivo Sick Sad World.<br>- <b>broadcast</b>: Inicia una señal de prueba secreta.<br>- <b>glitch</b>: Genera anomalías en el sistema.<br>- <b>clear</b>: Limpia la terminal.<br>- <b>secret</b>: Desbloquea un mensaje oculto del canal de televisión.";
+                } else if (val === 'about') {
+                    response = "SICK SAD WORLD .COM es el archivo definitivo de reportajes bizarros, misterios urbanos y cultura alternativa de los 90.";
+                } else if (val === 'broadcast') {
+                    response = "<span class='text-[#ff3333]'>[!] TRANSMISIÓN DE EMERGENCIA ACTIVADA: Manténgase alejado de los microondas abiertos.</span>";
+                } else if (val === 'glitch') {
+                    response = "01010011 01001001 01000011 01001011 01010011 01000001 01000100 <br><span class='text-[#ff3333]'>[ANOMALÍA DETECTADA EN EL SECTOR 4]</span>";
+                } else if (val === 'clear') {
+                    screen.innerHTML = "";
+                    return;
+                } else if (val === 'secret') {
+                    response = "<span class='text-[#ffff00] font-bold'>✦ ¡EASTER EGG DESBLOQUEADO! 'El mundo es un lugar extraño, pero al menos tenemos buena televisión.'</span>";
+                } else if (val === '') {
+                    response = "";
+                } else {
+                    response = `<span class='text-red-500'>Comando no reconocido: '${escapeHTML(val)}'. Escribe 'help' para ayuda.</span>`;
+                }
+
+                if (response) {
+                    screen.innerHTML += `<div>${response}</div>`;
+                }
+
+                screen.scrollTop = screen.scrollHeight;
+            }
+        }
+
+        // Simulated audio toggle
+        let audioActive = false;
+        function toggleAudio() {
+            audioActive = !audioActive;
+            const btn = document.getElementById('audio-btn');
+            if (audioActive) {
+                btn.innerText = "[AUDIO_FEED: ON (AM STATIC)]";
+                btn.classList.add('text-[#ffff00]');
+            } else {
+                btn.innerText = "[AUDIO_FEED: OFF]";
+                btn.classList.remove('text-[#ffff00]');
+            }
+        }
+    </script>
+</body>
+</html>
